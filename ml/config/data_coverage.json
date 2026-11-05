@@ -1,0 +1,29 @@
+[
+  {
+    "file": "youtube_top100_positions_2020.csv.gz",
+    "size_bytes": 8247365,
+    "md5": "cfc1097ed0e93435281a5f6180d34458",
+    "expected_md5": "cfc1097ed0e93435281a5f6180d34458",
+    "expected_size": 8247365,
+    "match": true,
+    "exists_in_manifest": true
+  },
+  {
+    "file": "youtube_top100_positions_2022.csv.gz",
+    "size_bytes": 8345278,
+    "md5": "ad15509982a728bae07144b1531f5573",
+    "expected_md5": "ad15509982a728bae07144b1531f5573",
+    "expected_size": 8345278,
+    "match": true,
+    "exists_in_manifest": true
+  },
+  {
+    "file": "youtube_top100_positions_2026.csv.gz",
+    "size_bytes": 6685059,
+    "md5": "24a08b2096a445dece92eda5235a52a3",
+    "expected_md5": "24a08b2096a445dece92eda5235a52a3",
+    "expected_size": 6685059,
+    "match": true,
+    "exists_in_manifest": true
+  }
+]

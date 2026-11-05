@@ -1,0 +1,327 @@
+{
+  "audit_timestamp": "2026-10-27T17:11:22.495163+00:00",
+  "years_covered": [
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
+  "is_2026_partial": true,
+  "date_range": {
+    "start": "2018-05-03 00:00:00",
+    "end": "2026-10-15 00:00:00"
+  },
+  "inventory": [
+    {
+      "year": "2018",
+      "raw_file": "youtube_top100_positions_2018.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 5160281,
+      "parquet_file": "data\\processed\\youtube\\year=2018\\youtube_top100_positions_2018.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 2700325,
+      "parquet_rows": 154010
+    },
+    {
+      "year": "2019",
+      "raw_file": "youtube_top100_positions_2019.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 7975183,
+      "parquet_file": "data\\processed\\youtube\\year=2019\\youtube_top100_positions_2019.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4013460,
+      "parquet_rows": 228817
+    },
+    {
+      "year": "2020",
+      "raw_file": "youtube_top100_positions_2020.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 8247365,
+      "parquet_file": "data\\processed\\youtube\\year=2020\\youtube_top100_positions_2020.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4141297,
+      "parquet_rows": 233217
+    },
+    {
+      "year": "2021",
+      "raw_file": "youtube_top100_positions_2021.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 8167549,
+      "parquet_file": "data\\processed\\youtube\\year=2021\\youtube_top100_positions_2021.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4110408,
+      "parquet_rows": 228818
+    },
+    {
+      "year": "2022",
+      "raw_file": "youtube_top100_positions_2022.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 8345278,
+      "parquet_file": "data\\processed\\youtube\\year=2022\\youtube_top100_positions_2022.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4138732,
+      "parquet_rows": 228826
+    },
+    {
+      "year": "2023",
+      "raw_file": "youtube_top100_positions_2023.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 8524644,
+      "parquet_file": "data\\processed\\youtube\\year=2023\\youtube_top100_positions_2023.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4155679,
+      "parquet_rows": 228816
+    },
+    {
+      "year": "2024",
+      "raw_file": "youtube_top100_positions_2024.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 8646931,
+      "parquet_file": "data\\processed\\youtube\\year=2024\\youtube_top100_positions_2024.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4249164,
+      "parquet_rows": 228813
+    },
+    {
+      "year": "2025",
+      "raw_file": "youtube_top100_positions_2025.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 8466647,
+      "parquet_file": "data\\processed\\youtube\\year=2025\\youtube_top100_positions_2025.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 4251759,
+      "parquet_rows": 228814
+    },
+    {
+      "year": "2026",
+      "raw_file": "youtube_top100_positions_2026.csv.gz",
+      "raw_exists": true,
+      "raw_size_bytes": 6685059,
+      "parquet_file": "data\\processed\\youtube\\year=2026\\youtube_top100_positions_2026.parquet",
+      "parquet_exists": true,
+      "parquet_size_bytes": 3491599,
+      "parquet_rows": 184820
+    }
+  ],
+  "total_rows": 1944951,
+  "invalid_ranks": 0,
+  "null_counts": {
+    "release_date": 11714,
+    "title": 162,
+    "artists": 5038,
+    "views": 99
+  },
+  "country_week_stats": {
+    "total_country_weeks": 19448,
+    "exact_100_rows": 19301,
+    "non_100_rows": 147,
+    "non_100_examples": [
+      {
+        "cc": "at",
+        "week_end": "2019-07-04 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "at",
+        "week_end": "2019-11-14 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "at",
+        "week_end": "2021-04-22 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "at",
+        "week_end": "2022-03-31 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "au",
+        "week_end": "2022-02-24 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "au",
+        "week_end": "2023-03-09 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "be",
+        "week_end": "2023-05-25 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "be",
+        "week_end": "2023-11-30 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "be",
+        "week_end": "2025-08-07 00:00:00",
+        "row_cnt": 101
+      },
+      {
+        "cc": "ch",
+        "week_end": "2024-06-20 00:00:00",
+        "row_cnt": 101
+      }
+    ]
+  },
+  "countries_per_week": {
+    "min": 44,
+    "max": 44,
+    "median": 44.0
+  },
+  "weeks_per_country": {
+    "min": 442,
+    "max": 442,
+    "median": 442.0,
+    "details": {
+      "ar": 442,
+      "at": 442,
+      "au": 442,
+      "be": 442,
+      "br": 442,
+      "ca": 442,
+      "ch": 442,
+      "cl": 442,
+      "co": 442,
+      "cz": 442,
+      "de": 442,
+      "dk": 442,
+      "ee": 442,
+      "es": 442,
+      "fi": 442,
+      "fr": 442,
+      "gb": 442,
+      "global": 442,
+      "ie": 442,
+      "is": 442,
+      "it": 442,
+      "jp": 442,
+      "ke": 442,
+      "kr": 442,
+      "lu": 442,
+      "mx": 442,
+      "ng": 442,
+      "nl": 442,
+      "no": 442,
+      "nz": 442,
+      "pe": 442,
+      "pl": 442,
+      "pt": 442,
+      "ro": 442,
+      "rs": 442,
+      "ru": 442,
+      "se": 442,
+      "tr": 442,
+      "tz": 442,
+      "ua": 442,
+      "ug": 442,
+      "us": 442,
+      "za": 442,
+      "zw": 442
+    }
+  },
+  "gaps_analysis": {
+    "total_internal_gaps": 0,
+    "gaps_by_country": {},
+    "horizon_breaking_country_weeks_total": 176,
+    "horizon_breaks_dataset_boundary": 176,
+    "horizon_breaks_internal_gap": 0
+  },
+  "song_identity_analysis": {
+    "unique_keys": 121256,
+    "canonical_songs": 120011,
+    "canonical_groups_with_multiple_keys": 1375,
+    "net_redundant_keys_resolved": 1569,
+    "sample_merges": [
+      {
+        "canonical_id": "c0c2085b9350ceba",
+        "key_count": 2,
+        "keys": [
+          "CZNcVjG0tKY",
+          "jZNWEPqZ7zw"
+        ],
+        "titles": [
+          "Bad Habits (Live)",
+          "Bad Habits"
+        ],
+        "artists": [
+          "Ed Sheeran",
+          "Ed Sheeran"
+        ]
+      },
+      {
+        "canonical_id": "1f726e72c6e8ce0e",
+        "key_count": 2,
+        "keys": [
+          "CRrf3h9vhp8",
+          "LYeIr2bBdUA"
+        ],
+        "titles": [
+          "traitor",
+          "traitor (Live)"
+        ],
+        "artists": [
+          "Olivia Rodrigo",
+          "Olivia Rodrigo"
+        ]
+      },
+      {
+        "canonical_id": "37c58923ab93b425",
+        "key_count": 2,
+        "keys": [
+          "Zi_XLOBDo_Y",
+          "T:Y:qU5sDCNhaQE"
+        ],
+        "titles": [
+          "BILLIE JEAN",
+          "Billie Jean"
+        ],
+        "artists": [
+          "Michael Jackson",
+          "Michael Jackson"
+        ]
+      },
+      {
+        "canonical_id": "9c98018f86c7cedc",
+        "key_count": 2,
+        "keys": [
+          "0ZZwQgqk4PA",
+          "nHPhaqiUZ4A"
+        ],
+        "titles": [
+          "Daily Duppy (feat. GRM Daily)",
+          "Daily Duppy (feat. GRM Daily)"
+        ],
+        "artists": [
+          "Morrisson",
+          "Morrisson"
+        ]
+      },
+      {
+        "canonical_id": "4c22eced175b5c20",
+        "key_count": 2,
+        "keys": [
+          "FShbJcG4ziQ",
+          "V2-9oGCC-eE"
+        ],
+        "titles": [
+          "Vazge\u00e7tim",
+          "Vazge\u00e7tim"
+        ],
+        "artists": [
+          "Y\u0131ld\u0131z Tilbe",
+          "Y\u0131ld\u0131z Tilbe"
+        ]
+      }
+    ]
+  }
+}

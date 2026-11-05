@@ -1,0 +1,45 @@
+cc,country_name,region,sub_region,primary_language
+ar,Argentina,Americas,South America,es
+at,Austria,Europe,Western Europe,de
+au,Australia,Oceania,Oceania,en
+be,Belgium,Europe,Western Europe,fr
+br,Brazil,Americas,South America,pt
+ca,Canada,Americas,North America,en
+ch,Switzerland,Europe,Western Europe,de
+cl,Chile,Americas,South America,es
+co,Colombia,Americas,South America,es
+cz,Czechia,Europe,Eastern Europe,cs
+de,Germany,Europe,Western Europe,de
+dk,Denmark,Europe,Northern Europe,da
+ee,Estonia,Europe,Northern Europe,et
+es,Spain,Europe,Southern Europe,es
+fi,Finland,Europe,Northern Europe,fi
+fr,France,Europe,Western Europe,fr
+gb,United Kingdom,Europe,Western Europe,en
+global,Global,Global,Global,en
+ie,Ireland,Europe,Western Europe,en
+is,Iceland,Europe,Northern Europe,is
+it,Italy,Europe,Southern Europe,it
+jp,Japan,Asia,East Asia,ja
+ke,Kenya,Africa,Sub-Saharan Africa,sw
+kr,South Korea,Asia,East Asia,ko
+lu,Luxembourg,Europe,Western Europe,fr
+mx,Mexico,Americas,North America,es
+ng,Nigeria,Africa,Sub-Saharan Africa,en
+nl,Netherlands,Europe,Western Europe,nl
+no,Norway,Europe,Northern Europe,no
+nz,New Zealand,Oceania,Oceania,en
+pe,Peru,Americas,South America,es
+pl,Poland,Europe,Eastern Europe,pl
+pt,Portugal,Europe,Southern Europe,pt
+ro,Romania,Europe,Eastern Europe,ro
+rs,Serbia,Europe,Eastern Europe,sr
+ru,Russia,Europe,Eastern Europe,ru
+se,Sweden,Europe,Northern Europe,sv
+tr,Turkey,Asia,Middle East,tr
+tz,Tanzania,Africa,Sub-Saharan Africa,sw
+ua,Ukraine,Europe,Eastern Europe,uk
+ug,Uganda,Africa,Sub-Saharan Africa,en
+us,United States,Americas,North America,en
+za,South Africa,Africa,Sub-Saharan Africa,en
+zw,Zimbabwe,Africa,Sub-Saharan Africa,en

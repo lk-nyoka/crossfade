@@ -1,0 +1,21 @@
+# Crossfade pipeline & model configuration (single source of truth)
+horizon_weeks: 4
+burn_in_date: "2018-11-01"         # first prediction snapshot (26 weeks of history before it)
+max_snapshot_date: "2026-09-17"    # last snapshot with a fully observed 4-week outcome
+live_snapshot_date: "2026-10-15"   # latest chart week; scored for the demo, no labels
+max_song_age_weeks: 26
+simultaneous_launch_threshold_countries: 3
+treat_live_as_same: true
+
+splits:
+  final_test_start: "2025-01-01"
+  final_test_end: "2026-09-17"
+  folds:                           # walk-forward; train ends 4+ weeks before validation starts (purge)
+    - {name: fold_2022, train_end: "2021-12-02", val_start: "2022-01-01", val_end: "2022-12-31"}
+    - {name: fold_2023, train_end: "2022-12-01", val_start: "2023-01-01", val_end: "2023-12-31"}
+    - {name: fold_2024, train_end: "2023-11-30", val_start: "2024-01-01", val_end: "2024-12-31"}
+  final_train_end: "2024-12-05"
+
+data:
+  parquet_glob: "data/processed/youtube/year=*/*.parquet"
+  country_meta: "data/reference/country_meta.csv"

@@ -1,0 +1,14 @@
+{
+  "trained_rounds": 156,
+  "test_rows": 6114653,
+  "test_positives": 14624,
+  "test_base_rate": 0.0023916319478303194,
+  "test_groups_total": 150333,
+  "test_groups_with_entry": 5650,
+  "calibration_ece": 0.000189566296594999,
+  "brier": 0.002209214589756816,
+  "train_rows": 1247460,
+  "train_positives": 54518,
+  "live_snapshot": "2026-10-15",
+  "live_songs": 1719
+}

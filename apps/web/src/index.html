@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crossfade — next-market radar for African music</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0: #f4f4f2;
+  --surface-1: #fcfcfb;
+  --line: #e4e3df;
+  --line-strong: #cfcdc7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #7b7a75;
+  --series-1: #2a78d6;      /* magnitude (probabilities, rates) */
+  --series-1-soft: #cde2fb;
+  --accent: #eb6834;        /* Crossfade's own model */
+  --good: #0d7a3f;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--surface-0); color: var(--text-primary); font: 14px/1.45 var(--sans); }
+a { color: var(--series-1); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+header.top { border-bottom: 1px solid var(--line); background: var(--surface-1); position: sticky; top: 0; z-index: 5; }
+header.top .wrap { display: flex; align-items: center; gap: 24px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -0.01em; }
+.brand svg { display: block; }
+nav.tabs { display: flex; gap: 2px; margin-left: auto; }
+nav.tabs button { all: unset; cursor: pointer; white-space: nowrap; padding: 7px 12px; border-radius: 6px; color: var(--text-secondary); font-weight: 500; }
+nav.tabs button[aria-selected="true"] { background: var(--surface-0); color: var(--text-primary); box-shadow: inset 0 0 0 1px var(--line); }
+nav.tabs button:focus-visible { outline: 2px solid var(--series-1); }
+.hero { padding: 28px 0 18px; }
+.hero h1 { font-size: 28px; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 8px; font-weight: 650; max-width: 820px; }
+.hero p { color: var(--text-secondary); margin: 0; max-width: 760px; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 8px; }
+.kpi { background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.kpi .v { font: 600 26px/1.1 var(--mono); letter-spacing: -0.02em; }
+.kpi .l { color: var(--text-secondary); font-size: 12.5px; margin-top: 4px; }
+.kpi .s { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+.panel { background: var(--surface-1); border: 1px solid var(--line); border-radius: 12px; }
+.grid > *, .two > * { min-width: 0; }
+.grid { display: grid; grid-template-columns: 340px 1fr; gap: 16px; margin: 16px 0 40px; align-items: start; }
+.list { max-height: calc(100vh - 150px); display: flex; flex-direction: column; position: sticky; top: 72px; }
+.list .ctrl { padding: 12px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+input[type=search], select { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface-1); color: var(--text-primary); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { all: unset; cursor: pointer; font-size: 12.5px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-secondary); }
+.chip[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); border-color: var(--text-primary); }
+.items { overflow: auto; }
+.item { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.item:hover { background: var(--surface-0); }
+.item[aria-current="true"] { background: #eef4fc; box-shadow: inset 3px 0 0 var(--series-1); }
+.item .t { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .a { color: var(--text-secondary); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .m { display: flex; gap: 10px; justify-content: space-between; color: var(--text-muted); font: 12px var(--mono); margin-top: 3px; }
+.detail { padding: 20px 22px 24px; min-height: 400px; }
+.detail h2 { margin: 0; font-size: 22px; letter-spacing: -0.015em; }
+.detail .by { color: var(--text-secondary); margin-top: 2px; }
+.meta { display: flex; gap: 18px; flex-wrap: wrap; color: var(--text-muted); font: 12.5px var(--mono); margin: 10px 0 16px; }
+.meta b { color: var(--text-primary); font-weight: 600; }
+h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin: 22px 0 10px; font-weight: 600; }
+.markets { display: flex; flex-wrap: wrap; gap: 6px; }
+.mk { font: 12.5px var(--mono); padding: 3px 8px; border-radius: 6px; background: var(--surface-0); border: 1px solid var(--line); }
+.mk span { color: var(--text-muted); }
+.rows { display: grid; gap: 4px; }
+.row { display: grid; grid-template-columns: 22px 150px 1fr 74px; gap: 12px; align-items: center; padding: 9px 6px; border-radius: 8px; cursor: default; }
+.row:hover { background: var(--surface-0); }
+.row .rk { font: 12px var(--mono); color: var(--text-muted); text-align: right; }
+.row .cn { font-weight: 600; }
+.row .cn small { display: block; color: var(--text-muted); font-weight: 400; font-size: 12px; }
+.bar { position: relative; height: 10px; background: var(--surface-0); border-radius: 4px; overflow: hidden; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--series-1); border-radius: 0 4px 4px 0; }
+.row .pv { font: 600 13px var(--mono); text-align: right; }
+.reasons { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: -2px; }
+.reasons span { font-size: 12px; color: var(--text-secondary); background: var(--surface-0); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; }
+.hit { color: var(--good); font-weight: 650; }
+.note { color: var(--text-muted); font-size: 12.5px; margin-top: 10px; }
+.callout { background: #fff6f1; border: 1px solid #f6d3c3; border-radius: 10px; padding: 10px 12px; color: var(--text-secondary); font-size: 13px; margin-top: 12px; }
+.timeline { position: relative; height: 70px; margin: 6px 4px 0; }
+.timeline svg { width: 100%; height: 70px; overflow: visible; }
+.section { padding: 20px 22px; margin: 16px 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--text-muted); font-weight: 600; font-size: 12px; }
+td { font-family: var(--mono); }
+td:first-child, td.txt { font-family: var(--sans); }
+tr.ours td { font-weight: 650; }
+tr.ours td:first-child::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--accent); margin-right: 8px; vertical-align: 1px; }
+.tip { position: fixed; pointer-events: none; background: var(--text-primary); color: var(--surface-1); padding: 7px 9px; border-radius: 7px; font-size: 12.5px; z-index: 20; max-width: 280px; opacity: 0; transition: opacity .08s; }
+.tip b { font-family: var(--mono); }
+.prose { color: var(--text-secondary); max-width: 860px; }
+.prose li { margin: 4px 0; }
+.legend { display: flex; gap: 14px; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+footer { color: var(--text-muted); font-size: 12px; padding: 20px 0 40px; border-top: 1px solid var(--line); }
+@media (max-width: 900px) {
+  .grid, .two { grid-template-columns: 1fr; }
+  .list { position: static; max-height: 360px; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .row { grid-template-columns: 22px 110px 1fr 54px; }
+  header.top .wrap { gap: 12px; }
+  .brand span.word { display: none; }
+  nav.tabs { overflow-x: auto; min-width: 0; flex: 1; }
+  nav.tabs button { padding: 7px 9px; font-size: 13px; }
+  .detail, .section { padding: 16px; }
+  table { display: block; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="7" fill="#0b0b0b"/><path d="M6 17c3-8 5-8 7 0s4 8 7 0" stroke="#eb6834" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
+    <span class="word">Crossfade</span>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-view="radar" aria-selected="true">Live radar</button>
+    <button role="tab" data-view="backtest" aria-selected="false">Proof: 2025–26 backtest</button>
+    <button role="tab" data-view="corridors" aria-selected="false">Corridors</button>
+    <button role="tab" data-view="model" aria-selected="false">Model &amp; method</button>
+  </nav>
+</div></header>
+
+<main class="wrap" id="app"></main>
+<footer class="wrap" id="foot"></footer>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script id="crossfade-data" type="application/json">__DATA__</script>
+<script>
+(async function () {
+  let D;
+  const inline = document.getElementById("crossfade-data").textContent.trim();
+  if (inline && inline !== "__DATA__") D = JSON.parse(inline);
+  else D = await (await fetch("data/crossfade.json")).json();
+
+  const C = D.countries, M = D.model, S = M.summary;
+  const name = cc => (C[cc] && C[cc].name) || cc.toUpperCase();
+  const isAfrica = cc => C[cc] && C[cc].region === "Africa";
+  const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
+  const artists = a => String(a ?? "").split(" | ").join(", ");
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
+  const app = document.getElementById("app");
+  const tip = document.getElementById("tip");
+  const bench = (split, model) => M.benchmark.find(r => r.split === split && r.model === model);
+  const ours = bench("test_all", "Crossfade_LGBM");
+  const baseRows = M.benchmark.filter(r => r.split === "test_all" && r.model !== "Crossfade_LGBM");
+  const bestOn = k => baseRows.reduce((a, b) => (b[k] > a[k] ? b : a));
+  const slate = (m, roster = "all rising songs") => M.decision.find(r => r.roster === roster && r.k_per_week === 10 && r.model === m).precision;
+  const afr = M.slices.filter(r => r.slice === "debuted_in_africa");
+  const afrOurs = afr.find(r => r.model === "Crossfade_LGBM"), afrBase = afr.find(r => r.model !== "Crossfade_LGBM");
+
+  // tooltip
+  document.addEventListener("mousemove", e => {
+    const t = e.target.closest("[data-tip]");
+    if (!t) { tip.style.opacity = 0; return; }
+    tip.innerHTML = t.dataset.tip;
+    const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8);
+    tip.style.left = x + "px"; tip.style.top = (e.clientY + 16) + "px"; tip.style.opacity = 1;
+  });
+
+  document.getElementById("foot").innerHTML =
+    `Data: YouTube weekly Top-100 charts for 43 countries, May 2018 – ${D.live_week} (Zenodo record 23644526, CC-BY 4.0). ` +
+    `Model: LightGBM trained on snapshots to Dec 2024; every number on this page from 2025 onward is out-of-sample. ` +
+    `Probabilities are for a first chart entry within 4 weeks. Built for DataNova 2026.`;
+
+  function hero() {
+    return `<section class="hero">
+      <h1>Get ahead of where a rising song breaks next.</h1>
+      <p>African labels and distributors can work a handful of markets a week, not forty-three. Crossfade reads how songs have
+      travelled between 43 national YouTube charts since 2018 and ranks the countries each rising song is most likely to enter in the
+      next four weeks, so local playlist pitching, PR and content go where momentum is already heading. Every pick shows its evidence.</p>
+      <div class="kpis">
+        <div class="kpi"><div class="v">${pct(slate("Crossfade_LGBM"))}</div><div class="l">of each week's top-10 song–market picks entered within 4 weeks</div><div class="s">best baseline ${pct(Math.max(slate("B3_transition_noisy_or"), slate("B5_logistic_blend")))} · random ${pct(slate("B0_random"), 1)}</div></div>
+        <div class="kpi"><div class="v">${pct(ours["hit@1"])}</div><div class="l">#1 pick for a song is a market it actually entered</div><div class="s">best baseline ${pct(bestOn("hit@1")["hit@1"])}</div></div>
+        <div class="kpi"><div class="v">${pct(ours["recall@10"])}</div><div class="l">of real next markets caught in the top 10 of 43</div><div class="s">random ranking ${pct(bench("test_all","B0_random")["recall@10"])}</div></div>
+        <div class="kpi"><div class="v">${pct(afrOurs["recall@5"])}</div><div class="l">top-5 recall for songs that debuted in Africa</div><div class="s">baseline ${pct(afrBase["recall@5"])} · ${afrOurs.groups} song-weeks</div></div>
+      </div>
+      <div class="note" style="margin-top:2px">All figures: held-out Jan 2025 – Sep 2026, never seen in training. Details on the Model &amp; method tab.</div>
+    </section>`;
+  }
+
+  function timelineSVG(s) {
+    if (!s.path.length) return "";
+    const t0 = new Date(s.path[0].w), t1 = new Date(s.t);
+    const span = Math.max(7, (t1 - t0) / 864e5);
+    const W = 1000, pad = 30;
+    const x = d => pad + ((new Date(d) - t0) / 864e5) / span * (W - 2 * pad);
+    const byWeek = {};
+    s.path.forEach(p => (byWeek[p.w] = byWeek[p.w] || []).push(p.cc));
+    let dots = "";
+    Object.entries(byWeek).forEach(([w, ccs]) => {
+      ccs.forEach((cc, i) => {
+        const y = 40 - i * 11;
+        dots += `<circle cx="${x(w)}" cy="${Math.max(y, -20)}" r="5" fill="${isAfrica(cc) ? "var(--accent)" : "var(--series-1)"}" stroke="var(--surface-1)" stroke-width="2" data-tip="<b>${esc(name(cc))}</b><br>first charted ${w}"></circle>`;
+      });
+    });
+    return `<div class="timeline"><svg viewBox="0 0 ${W} 70" preserveAspectRatio="none">
+      <line x1="${pad}" x2="${W - pad}" y1="52" y2="52" stroke="var(--line-strong)"/>
+      <text x="${pad}" y="68" font-size="11" fill="var(--text-muted)" font-family="var(--mono)">${s.path[0].w}</text>
+      <text x="${W - pad}" y="68" font-size="11" fill="var(--text-muted)" text-anchor="end" font-family="var(--mono)">${s.t}</text>
+      ${dots}</svg></div>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>market entered</span><span><i style="background:var(--accent)"></i>African market entered</span></div>`;
+  }
+
+  function songDetail(s, mode) {
+    const max = Math.max(...s.targets.map(t => t.p), 0.05);
+    const rows = s.targets.map((t, i) => {
+      const hit = mode === "backtest" ? (t.hit ? ` <span class="hit" aria-label="entered within 4 weeks">✓</span>` : ` <span style="color:var(--text-muted)" aria-label="did not enter">·</span>`) : "";
+      const tipTxt = `<b>${pct(t.p, 1)}</b> chance of a first chart entry in ${esc(name(t.cc))} within 4 weeks` +
+        (t.src ? `<br>strongest corridor: ${esc(name(t.src))} → ${esc(name(t.cc))} (${pct(t.src_p || 0, 1)} historical 4-week rate)` : "");
+      return `<div class="row" data-tip="${esc(tipTxt)}">
+        <div class="rk">${i + 1}</div>
+        <div class="cn">${esc(name(t.cc))}<small>${esc(C[t.cc] ? C[t.cc].sub : "")}</small></div>
+        <div class="bar"><i style="width:${(t.p / max * 100).toFixed(1)}%"></i></div>
+        <div class="pv">${pct(t.p, t.p < 0.1 ? 1 : 0)}${hit}</div>
+        ${t.reasons && t.reasons.length ? `<div class="reasons">${t.reasons.map(r => `<span>${esc(r)}</span>`).join("")}</div>` : ""}
+      </div>`;
+    }).join("");
+    const missed = mode === "backtest" ? s.actual.filter(cc => !s.targets.some(t => t.cc === cc)) : [];
+    return `<h2>${esc(s.title)}</h2><div class="by">${esc(artists(s.artists))}</div>
+      <div class="meta"><span>snapshot <b>${s.t}</b></span><span>age <b>${s.age} wk</b></span>
+        <span>charting in <b>${s.now.length}</b> markets</span><span>reached <b>${s.path.length}</b> so far</span>
+        ${mode === "radar" ? `<span>expected new markets in 4 wk <b>${s.expected.toFixed(1)}</b></span>` : ""}
+        ${s.simul ? `<span><b>coordinated global launch</b></span>` : ""}</div>
+      <h3>Charting this week</h3>
+      <div class="markets">${s.now.map(n => `<span class="mk">${esc(name(n.cc))} <span>#${n.rank}</span></span>`).join("")}</div>
+      <h3>How it has travelled</h3>${timelineSVG(s)}
+      <h3>${mode === "backtest" ? "What Crossfade predicted — ✓ marks markets the song entered in the next 4 weeks" : "Most likely next markets (4 weeks)"}</h3>
+      <div class="rows">${rows}</div>
+      ${mode === "backtest" ? `<div class="note">Actually entered: ${s.actual.map(cc => esc(name(cc))).join(", ")}${missed.length ? ` · not in top 8: ${missed.map(cc => esc(name(cc))).join(", ")}` : ""}</div>` : ""}
+      <div class="note">Hover a row for the probability and the strongest historical corridor behind it.</div>`;
+  }
+
+  function listView(mode) {
+    const songs = mode === "radar" ? D.radar : D.backtest;
+    let filter = mode === "radar" ? "africa" : "all", q = "";
+    const first = songs.find(s => filter !== "africa" || s.now.some(n => isAfrica(n.cc)));
+    let sel = first && first.id + first.t;
+    app.innerHTML = hero() + `<div class="grid">
+      <div class="panel list"><div class="ctrl">
+        <input type="search" placeholder="Search song or artist" aria-label="Search songs">
+        <div class="chips" role="group" aria-label="Filter">
+          <button class="chip" data-f="all" aria-pressed="${mode !== "radar"}">All</button>
+          <button class="chip" data-f="africa" aria-pressed="${mode === "radar"}">Charting in Africa</button>
+          <button class="chip" data-f="emerging" aria-pressed="false">Not a global launch</button>
+        </div>
+        <div class="note" style="margin:0">${mode === "radar"
+          ? `Chart week <b>${D.live_week}</b> · ${songs.length} rising songs, ranked by chance of entering a new market`
+          : `${songs.length} songs from the held-out 2025–26 weeks that went on to enter ≥2 new markets. Use this tab to see how picks line up with outcomes; overall accuracy is on the Model tab.`}</div>
+      </div><div class="items" role="listbox"></div></div>
+      <div class="panel detail" id="detail"></div></div>`;
+    const items = app.querySelector(".items"), detail = app.querySelector("#detail");
+    function render() {
+      const vis = songs.filter(s =>
+        (filter === "all" || (filter === "africa" ? s.now.some(n => isAfrica(n.cc)) : !s.simul)) &&
+        (!q || (s.title + " " + s.artists).toLowerCase().includes(q)));
+      items.innerHTML = vis.map(s => `<button class="item" role="option" data-id="${s.id + s.t}" aria-current="${s.id + s.t === sel}">
+        <div class="t">${esc(s.title)}</div><div class="a">${esc(artists(s.artists))}</div>
+        <div class="m"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.now.slice(0, 5).map(n => n.cc.toUpperCase()).join(" ")}${s.now.length > 5 ? " +" + (s.now.length - 5) : ""}</span>
+        <span style="flex:none">${mode === "radar" ? "→ " + name(s.targets[0].cc) : s.t}</span></div></button>`).join("") || `<div class="note" style="padding:12px">No songs match.</div>`;
+      const cur = songs.find(s => s.id + s.t === sel) || vis[0];
+      detail.innerHTML = cur ? songDetail(cur, mode) : "";
+    }
+    items.addEventListener("click", e => { const b = e.target.closest(".item"); if (b) { sel = b.dataset.id; render(); } });
+    app.querySelector("input").addEventListener("input", e => { q = e.target.value.toLowerCase().trim(); render(); });
+    app.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+      filter = c.dataset.f; app.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === c)); render();
+    }));
+    render();
+  }
+
+  function corridorsView() {
+    const sources = Object.keys(C).sort((a, b) => name(a).localeCompare(name(b)));
+    app.innerHTML = `<section class="hero"><h1>Corridors: where songs go next from each market</h1>
+      <p>For every pair of countries, the share of songs that entered the second chart within four weeks of first charting in the first
+      (smoothed, estimated from outcomes fully observed before the latest quarter). These corridors are the backbone of the model's evidence.</p></section>
+      <div class="panel section"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <label for="src" style="font-weight:600">From</label>
+        <select id="src" style="max-width:260px">${sources.map(cc => `<option value="${cc}" ${cc === "za" ? "selected" : ""}>${esc(name(cc))}</option>`).join("")}</select>
+        <span class="note" style="margin:0">Top 15 destinations</span></div>
+        <div class="rows" id="cor" style="margin-top:14px"></div>
+        <div class="legend" style="margin-top:12px"><span><i style="background:var(--series-1)"></i>4-week entry rate</span></div></div>`;
+    const draw = () => {
+      const a = app.querySelector("#src").value;
+      const rows = D.corridors.filter(r => r.a === a).sort((x, y) => y.p - x.p).slice(0, 15);
+      const max = Math.max(...rows.map(r => r.p), 0.01);
+      app.querySelector("#cor").innerHTML = rows.map((r, i) => `<div class="row" data-tip="<b>${pct(r.p, 1)}</b> of songs charting in ${esc(name(a))} entered ${esc(name(r.c))} within 4 weeks">
+        <div class="rk">${i + 1}</div><div class="cn">${esc(name(r.c))}<small>${esc(C[r.c].sub)}</small></div>
+        <div class="bar"><i style="width:${(r.p / max * 100).toFixed(1)}%"></i></div><div class="pv">${pct(r.p, 1)}</div></div>`).join("")
+        || `<div class="note">Not enough history from this market.</div>`;
+    };
+    app.querySelector("#src").addEventListener("change", draw); draw();
+  }
+
+  function modelView() {
+    const names = { B0_random: "Random", B1_market_popularity: "Market popularity", B2_transition_max: "Strongest corridor",
+      B3_transition_noisy_or: "Combined corridors", B4_cultural_proximity: "Cultural proximity", B5_logistic_blend: "Logistic blend of baselines",
+      Crossfade_LGBM: "Crossfade (LightGBM)" };
+    const tbl = split => `<table><thead><tr><th>Model</th><th>Hit@1</th><th>Hit@3</th><th>Recall@5</th><th>95% CI</th><th>Recall@10</th><th>NDCG@10</th><th>MRR</th><th>PR-AUC</th></tr></thead><tbody>
+      ${M.benchmark.filter(r => r.split === split).map(r => `<tr class="${r.model === "Crossfade_LGBM" ? "ours" : ""}"><td>${names[r.model]}</td>
+      <td>${pct(r["hit@1"], 1)}</td><td>${pct(r["hit@3"], 1)}</td><td>${pct(r["recall@5"], 1)}</td><td>${pct(r["recall@5_lo"], 1)}–${pct(r["recall@5_hi"], 1)}</td>
+      <td>${pct(r["recall@10"], 1)}</td><td>${r["ndcg@10"].toFixed(3)}</td><td>${r.mrr.toFixed(3)}</td><td>${r.pr_auc.toFixed(3)}</td></tr>`).join("")}</tbody></table>`;
+    // bar chart: hit@1 on test, ours in accent, baselines in neutral
+    const rows = M.benchmark.filter(r => r.split === "test_all");
+    const bars = rows.map(r => `<div class="row" data-tip="<b>${pct(r["hit@1"], 1)}</b> of song-weeks: the #1 pick was entered within 4 weeks">
+      <div class="rk"></div><div class="cn" style="font-weight:${r.model === "Crossfade_LGBM" ? 650 : 500}">${names[r.model]}</div>
+      <div class="bar"><i style="width:${r["hit@1"] * 100}%;background:${r.model === "Crossfade_LGBM" ? "var(--accent)" : "var(--line-strong)"}"></i></div>
+      <div class="pv">${pct(r["hit@1"], 1)}</div></div>`).join("");
+    const folds = ["fold_2022", "fold_2023", "fold_2024"].map(f => {
+      const o = bench(f, "Crossfade_LGBM"), b = M.benchmark.filter(r => r.split === f && r.model !== "Crossfade_LGBM").sort((x, y) => y["recall@5"] - x["recall@5"])[0];
+      return `<tr><td>${f.replace("fold_", "Validate on ")}</td><td>${pct(o["recall@5"], 1)}</td><td>${pct(b["recall@5"], 1)}</td><td class="txt">${names[b.model]}</td><td>+${((o["recall@5"] - b["recall@5"]) * 100).toFixed(1)} pts</td></tr>`;
+    }).join("");
+    const shapMax = M.shap[0].v;
+    const shap = M.shap.slice(0, 12).map(r => `<div class="row" data-tip="mean |SHAP| ${r.v.toFixed(3)} (log-odds)">
+      <div class="rk"></div><div class="cn" style="font-weight:500;font-size:13px">${esc(r.label)}</div>
+      <div class="bar"><i style="width:${r.v / shapMax * 100}%"></i></div><div class="pv">${r.v.toFixed(2)}</div></div>`).join("");
+    // calibration: dots predicted vs observed per decile (log axes)
+    const cal = M.calibration, W = 460, H = 260, p = 40;
+    const lo = Math.log10(1e-5), hi = Math.log10(0.05);
+    const sx = v => p + (Math.log10(Math.max(v, 1e-5)) - lo) / (hi - lo) * (W - 2 * p);
+    const sy = v => H - p + 10 - (Math.log10(Math.max(v, 1e-5)) - lo) / (hi - lo) * (H - 2 * p);
+    const ticks = [1e-5, 1e-4, 1e-3, 1e-2];
+    const calSVG = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px">
+      ${ticks.map(t => `<line x1="${sx(t)}" x2="${sx(t)}" y1="${p - 10}" y2="${H - p + 10}" stroke="var(--line)"/><line x1="${p}" x2="${W - p}" y1="${sy(t)}" y2="${sy(t)}" stroke="var(--line)"/>
+        <text x="${sx(t)}" y="${H - 8}" font-size="10.5" text-anchor="middle" fill="var(--text-muted)" font-family="var(--mono)">${pct(t, t < 1e-3 ? 3 : 1)}</text>
+        <text x="${p - 6}" y="${sy(t) + 3}" font-size="10.5" text-anchor="end" fill="var(--text-muted)" font-family="var(--mono)">${pct(t, t < 1e-3 ? 3 : 1)}</text>`).join("")}
+      <line x1="${sx(1e-5)}" y1="${sy(1e-5)}" x2="${sx(0.05)}" y2="${sy(0.05)}" stroke="var(--text-muted)" stroke-dasharray="4 4"/>
+      <polyline fill="none" stroke="var(--series-1)" stroke-width="2" points="${cal.map(c => `${sx(c.mean_pred)},${sy(c.observed)}`).join(" ")}"/>
+      ${cal.map((c, i) => `<circle cx="${sx(c.mean_pred)}" cy="${sy(c.observed)}" r="6" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" data-tip="decile ${i + 1}: predicted <b>${pct(c.mean_pred, 3)}</b>, observed <b>${pct(c.observed, 3)}</b> (${c.n.toLocaleString()} rows)"/>`).join("")}
+    </svg>`;
+    app.innerHTML = `<section class="hero"><h1>Model &amp; method</h1>
+      <p>Trained on weekly snapshots from Nov 2018 to Dec 2024, tuned with walk-forward validation on 2022, 2023 and 2024, then tested once on
+      ${S.test_groups_total.toLocaleString()} song-weeks from Jan 2025 to Sep 2026 that it had never seen (${S.test_rows.toLocaleString()} song–country candidates,
+      ${S.test_positives.toLocaleString()} real first entries).</p></section>
+      <div class="two">
+        <div class="panel section"><h3 style="margin-top:0">#1 pick was right (held-out 2025–26)</h3>
+          <div class="legend"><span><i style="background:var(--accent)"></i>Crossfade</span><span><i style="background:var(--line-strong)"></i>Baselines</span></div>
+          <div class="rows">${bars}</div></div>
+        <div class="panel section"><h3 style="margin-top:0">Calibration: predicted vs observed entry rate</h3>${calSVG}
+          <div class="note">Each dot is a tenth of all test candidates. Dots on the dashed line mean a "2%" really happens ~2% of the time. Expected calibration error ${pct(S.calibration_ece, 3)}.</div></div>
+      </div>
+      <div class="panel section"><h3 style="margin-top:0">Held-out test, all songs</h3>${tbl("test_all")}
+        <h3>Emerging songs only (excludes coordinated launches in ≥3 countries)</h3>${tbl("test_emerging")}
+        <div class="note">Ranking metrics are averaged over song-weeks in which the song entered at least one new market (${S.test_groups_with_entry.toLocaleString()} of ${S.test_groups_total.toLocaleString()}); PR-AUC uses every candidate. CI: 500 bootstrap resamples of snapshot weeks.</div></div>
+      <div class="panel section"><h3 style="margin-top:0">Decision value: a weekly slate of 10 song–market picks (held-out 2025–26)</h3>
+        <table><thead><tr><th>Roster</th><th>Crossfade</th><th>Logistic blend</th><th>Combined corridors</th><th>Market popularity</th><th>Random</th></tr></thead><tbody>
+        ${["all rising songs", "emerging songs only", "10 songs x their #1 market", "songs charting in Africa"].map(ro => `<tr class="${""}"><td>${ro}</td>${["Crossfade_LGBM","B5_logistic_blend","B3_transition_noisy_or","B1_market_popularity","B0_random"].map(m => `<td${m === "Crossfade_LGBM" ? ' style="font-weight:650"' : ""}>${pct(slate(m, ro), 1)}</td>`).join("")}</tr>`).join("")}
+        </tbody></table>
+        <div class="note">Each week every model picks its 10 highest-scoring (song, market) pairs; the table shows the share that entered that chart within 4 weeks (90 weeks, 900 picks per model). "10 songs × their #1 market" forces a diversified slate.</div></div>
+      <div class="two">
+        <div class="panel section"><h3 style="margin-top:0">Stable across years (Recall@5)</h3>
+          <table><thead><tr><th>Fold</th><th>Crossfade</th><th>Best baseline</th><th>Which</th><th>Gain</th></tr></thead><tbody>${folds}</tbody></table></div>
+        <div class="panel section"><h3 style="margin-top:0">What drives predictions (mean |SHAP|)</h3><div class="rows">${shap}</div></div>
+      </div>
+      <div class="panel section prose"><h3 style="margin-top:0">How it works</h3><ol>
+        <li><b>One song, many names.</b> 121,256 YouTube video keys collapse to 119,728 songs (remasters, "(Live)", featured-artist spellings).</li>
+        <li><b>The question, every week.</b> For each song charting somewhere and ≤26 weeks old, for each of the 43 countries it hasn't reached yet: will it enter that chart in the next 4 weeks? 30.2M such questions; 0.23% are "yes".</li>
+        <li><b>Evidence only from the past.</b> Features use data dated on or before the snapshot. Country-to-country corridor rates are re-estimated every quarter from outcomes already fully observed. Automated tests check this.</li>
+        <li><b>Model.</b> LightGBM on 29 features: song momentum, corridor strength from its current markets, regional/language proximity, how open the target chart is to imports, and the artist's track record there. Explanations are exact TreeSHAP.</li>
+      </ol><h3>Limits</h3><ul>
+        <li>YouTube charts only — streaming, radio and TikTok momentum aren't in the data. 43 countries, so large parts of Africa and Asia are missing.</li>
+        <li>Correlational, not causal: it says where songs <i>like this</i> have gone next, not what a campaign will cause.</li>
+        <li>Popularity bias: established artists carry more history. The emerging-only slice is reported separately for that reason.</li>
+      </ul></div>`;
+  }
+
+  const views = { radar: () => listView("radar"), backtest: () => listView("backtest"), corridors: corridorsView, model: modelView };
+  document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach(x => x.setAttribute("aria-selected", x === b));
+    views[b.dataset.view](); scrollTo(0, 0);
+  }));
+  views.radar();
+})();
+</script>
+</body>
+</html>
