@@ -1,0 +1,117 @@
+1
+00:00:00,000 --> 00:00:03,304
+This is Crossfade, a next-market radar for African music.
+
+2
+00:00:03,354 --> 00:00:09,894
+It tells labels and distributors which country each rising
+song is likely to chart in next, four weeks before it
+
+3
+00:00:09,944 --> 00:00:13,012
+happens, and it shows the evidence behind every pick.
+
+4
+00:00:13,721 --> 00:00:20,091
+A distributor's marketing team can only work a handful of
+markets each week, but there are forty-three national
+
+5
+00:00:20,141 --> 00:00:20,496
+charts.
+
+6
+00:00:20,546 --> 00:00:25,817
+Today those choices are mostly gut feel, so effort often
+lands where a song was never going.
+
+7
+00:00:26,525 --> 00:00:32,646
+This is the live radar for the chart week of the fifteenth
+of October, filtered to songs charting in Africa.
+
+8
+00:00:32,696 --> 00:00:34,818
+Let Me Be is charting only in Nigeria.
+
+9
+00:00:34,868 --> 00:00:41,389
+Crossfade ranks Tanzania first, at twenty-two percent,
+because songs often travel from Nigeria to Tanzania, and the
+
+10
+00:00:41,439 --> 00:00:44,932
+lead artist has already charted there with nine earlier
+songs.
+
+11
+00:00:44,982 --> 00:00:46,589
+Every pick shows its reasons.
+
+12
+00:00:47,296 --> 00:00:55,027
+To test it honestly, the model was trained on data up to the
+end of 2024, and then scored once on 2025 and 2026.
+
+13
+00:00:55,077 --> 00:00:59,404
+The backtest puts each prediction next to what really
+happened.
+
+14
+00:00:59,454 --> 00:01:03,086
+The ticks mark the markets the song actually entered.
+
+15
+00:01:03,736 --> 00:01:05,092
+Underneath are corridors.
+
+16
+00:01:05,142 --> 00:01:10,549
+For every pair of countries, how often a song charting in
+one enters the other within four weeks.
+
+17
+00:01:10,599 --> 00:01:15,612
+They are re-estimated every quarter using only the past, so
+nothing leaks from the future.
+
+18
+00:01:16,262 --> 00:01:19,020
+Here is the result that matters for a budget.
+
+19
+00:01:19,070 --> 00:01:23,014
+Each week, every model picks its ten best song and market
+pairs.
+
+20
+00:01:23,064 --> 00:01:26,072
+Forty-one percent of Crossfade's picks came true.
+
+21
+00:01:26,122 --> 00:01:28,942
+The best simple rule managed thirteen percent.
+
+22
+00:01:29,592 --> 00:01:36,155
+It also beat every baseline in each validation year, and its
+probabilities are calibrated, so a twenty percent chance
+
+23
+00:01:36,205 --> 00:01:38,077
+really means about twenty percent.
+
+24
+00:01:38,783 --> 00:01:43,668
+Crossfade forecasts where songs spread on their own, not
+what promotion adds.
+
+25
+00:01:43,718 --> 00:01:47,257
+The next step is testing that with distributor partners.
+
+26
+00:01:47,307 --> 00:01:49,244
+Crossfade, by Lindokuhle Nyoka.
+
